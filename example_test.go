@@ -102,6 +102,7 @@ func ExampleIndex() {
 			xerr.PrintStack(err)
 		}
 	}()
+	_ = Example{}
 	ctx := context.Background()
 	user := struct {
 		Name string `json:"name"`
