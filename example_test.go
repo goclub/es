@@ -12,11 +12,7 @@ import (
 	"testing"
 )
 
-var example Example
-
-type Example struct {
-	Client *es7.Client
-}
+var example es.Example
 
 func init() {
 	/*
@@ -66,26 +62,29 @@ type TestExampleSuite struct {
 }
 
 func (suite TestExampleSuite) TestExampleIndex() {
-	ExampleIndex()
+	ExampleExample_Index()
 }
 
 func (suite TestExampleSuite) TestExampleSearch() {
-	ExampleSearch()
+	ExampleExample_Search()
 }
 func (suite TestExampleSuite) TestExampleSearchFromSize() {
-	ExampleSearchFromSize()
+	ExampleExample_SearchFromSize()
 }
 func (suite TestExampleSuite) TestExampleSearchMatch() {
-	ExampleSearchMatch()
+	ExampleExample_SearchMatch()
 }
 func (suite TestExampleSuite) TestExampleSearchMatchPhrase() {
-	ExampleSearchMatchPhrase()
+	ExampleExample_SearchMatchPhrase()
 }
 func (suite TestExampleSuite) TestExampleSearchBool() {
-	ExampleSearchBool()
+	ExampleExample_SearchBool()
 }
 func (suite TestExampleSuite) TestExampleSearchBoolFilter() {
-	ExampleSearchBoolFilter()
+	ExampleExample_SearchBoolFilter()
+}
+func (suite TestExampleSuite) TestExampleSearchGroupBy() {
+	ExampleExample_SearchGroupBy()
 }
 
 /*
@@ -95,14 +94,8 @@ POST /test/_doc
 	"age" : 18
 }
 */
-func ExampleIndex() {
+func ExampleExample_Index() {
 	var err error
-	/* only test use */ defer func() {
-		if err != nil {
-			xerr.PrintStack(err)
-		}
-	}()
-	_ = Example{}
 	ctx := context.Background()
 	user := struct {
 		Name string `json:"name"`
@@ -129,7 +122,7 @@ GET /bank/_search
   "size": 10
 }
 */
-func ExampleSearch() {
+func ExampleExample_Search() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -182,7 +175,7 @@ GET /bank/_search
   "size": 10
 }
 */
-func ExampleSearchFromSize() {
+func ExampleExample_SearchFromSize() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -206,7 +199,7 @@ func ExampleSearchFromSize() {
 	xjson.Print("formSizeList", formSizeList)
 	return
 }
-func ExampleSearchMatch() {
+func ExampleExample_SearchMatch() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -248,7 +241,7 @@ GET /bank/_search
   }
 }
 */
-func ExampleSearchMatchPhrase() {
+func ExampleExample_SearchMatchPhrase() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -290,7 +283,7 @@ GET /bank/_search
   }
 }
 */
-func ExampleSearchBool() {
+func ExampleExample_SearchBool() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -337,7 +330,7 @@ GET /bank/_search
   }
 }
 */
-func ExampleSearchBoolFilter() {
+func ExampleExample_SearchBoolFilter() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -363,5 +356,43 @@ func ExampleSearchBoolFilter() {
 		return
 	}
 	xjson.Print("matchBoolFilterList", matchBoolFilterList)
+	return
+}
+
+/*
+GET /bank/_search
+{
+  "size": 0,
+  "aggs": {
+    "group_by_state": {
+      "terms": {
+        "field": "state"
+      }
+    }
+  }
+}
+*/
+func ExampleExample_SearchGroupBy() {
+	var err error
+	/* only test use */ defer func() {
+		if err != nil {
+			xerr.PrintStack(err)
+		}
+	}()
+	ctx := context.Background()
+	result, err := example.Client.Search().Source(es.O{
+		"size": 0,
+		"aggs": es.O{
+			"group_by_state": es.O{
+				"terms": es.O{
+					"field": "state",
+				},
+			},
+		},
+	}).Do(ctx)
+	if err != nil {
+		return
+	}
+	xjson.PrintIndent("group_by_state", result.Aggregations["group_by_state"])
 	return
 }
