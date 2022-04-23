@@ -1,4 +1,4 @@
 package es
 
-type exampleSearchMatch struct {
+type ExampleSearchMatch struct {
 }
