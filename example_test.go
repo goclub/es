@@ -65,27 +65,27 @@ type TestExampleSuite struct {
 	suite.Suite
 }
 
-func (suite TestExampleSuite) TestExample_Index() {
-	Example_Index()
+func (suite TestExampleSuite) TestExampleIndex() {
+	ExampleIndex()
 }
 
-func (suite TestExampleSuite) TestExample_Search() {
-	Example_Search()
+func (suite TestExampleSuite) TestExampleSearch() {
+	ExampleSearch()
 }
-func (suite TestExampleSuite) TestExample_SearchFromSize() {
-	Example_SearchFromSize()
+func (suite TestExampleSuite) TestExampleSearchFromSize() {
+	ExampleSearchFromSize()
 }
-func (suite TestExampleSuite) TestExample_SearchMatch() {
-	Example_SearchMatch()
+func (suite TestExampleSuite) TestExampleSearchMatch() {
+	ExampleSearchMatch()
 }
-func (suite TestExampleSuite) TestExample_SearchMatchPhrase() {
-	Example_SearchMatchPhrase()
+func (suite TestExampleSuite) TestExampleSearchMatchPhrase() {
+	ExampleSearchMatchPhrase()
 }
-func (suite TestExampleSuite) TestExample_SearchBool() {
-	Example_SearchBool()
+func (suite TestExampleSuite) TestExampleSearchBool() {
+	ExampleSearchBool()
 }
-func (suite TestExampleSuite) TestExample_SearchBoolFilter() {
-	Example_SearchBoolFilter()
+func (suite TestExampleSuite) TestExampleSearchBoolFilter() {
+	ExampleSearchBoolFilter()
 }
 
 /*
@@ -95,7 +95,7 @@ POST /test/_doc
 	"age" : 18
 }
 */
-func Example_Index() {
+func ExampleIndex() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -128,7 +128,7 @@ GET /bank/_search
   "size": 10
 }
 */
-func Example_Search() {
+func ExampleSearch() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -181,7 +181,7 @@ GET /bank/_search
   "size": 10
 }
 */
-func Example_SearchFromSize() {
+func ExampleSearchFromSize() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -206,7 +206,7 @@ func Example_SearchFromSize() {
 	return
 }
 
-func Example_SearchMatch() {
+func ExampleSearchMatch() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -248,7 +248,7 @@ GET /bank/_search
   }
 }
 */
-func Example_SearchMatchPhrase() {
+func ExampleSearchMatchPhrase() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -290,7 +290,7 @@ GET /bank/_search
   }
 }
 */
-func Example_SearchBool() {
+func ExampleSearchBool() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -337,7 +337,7 @@ GET /bank/_search
   }
 }
 */
-func Example_SearchBoolFilter() {
+func ExampleSearchBoolFilter() {
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
