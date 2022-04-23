@@ -12,7 +12,11 @@ import (
 	"testing"
 )
 
-var example es.Example
+var example Example
+
+type Example struct {
+	Client *es7.Client
+}
 
 func init() {
 	/*
@@ -201,7 +205,6 @@ func ExampleSearchFromSize() {
 	xjson.Print("formSizeList", formSizeList)
 	return
 }
-
 func ExampleSearchMatch() {
 	var err error
 	/* only test use */ defer func() {
