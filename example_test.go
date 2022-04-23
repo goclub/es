@@ -14,7 +14,25 @@ import (
 
 var example es.Example
 
+type ExampleAccount struct {
+	AccountNumber int    `json:"account_number"`
+	Balance       int    `json:"balance"`
+	Firstname     string `json:"firstname"`
+	Lastname      string `json:"lastname"`
+	Age           int    `json:"age"`
+	Gender        string `json:"gender"`
+	Address       string `json:"address"`
+	Employer      string `json:"employer"`
+	Email         string `json:"email"`
+	City          string `json:"city"`
+	State         string `json:"state"`
+}
+
 func init() {
+	ExampleExample_NewClient()
+}
+
+func ExampleExample_NewClient() {
 	/*
 		请提前准备数据
 		PUT /bank
@@ -37,20 +55,6 @@ func init() {
 		xerr.PrintStack(err)
 	}
 	example.Client = client
-}
-
-type ExampleAccount struct {
-	AccountNumber int    `json:"account_number"`
-	Balance       int    `json:"balance"`
-	Firstname     string `json:"firstname"`
-	Lastname      string `json:"lastname"`
-	Age           int    `json:"age"`
-	Gender        string `json:"gender"`
-	Address       string `json:"address"`
-	Employer      string `json:"employer"`
-	Email         string `json:"email"`
-	City          string `json:"city"`
-	State         string `json:"state"`
 }
 
 func TestExample(t *testing.T) {
@@ -87,14 +91,15 @@ func (suite TestExampleSuite) TestExampleSearchGroupBy() {
 	ExampleExample_SearchGroupBy()
 }
 
-/*
-POST /test/_doc
-{
-	"name": "nimo",
-	"age" : 18
-}
-*/
+// ExampleExample_Index 索引文档
 func ExampleExample_Index() {
+	/*
+		POST /test/_doc
+		{
+			"name": "nimo",
+			"age" : 18
+		}
+	*/
 	var err error
 	ctx := context.Background()
 	user := struct {
@@ -112,17 +117,18 @@ func ExampleExample_Index() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "query": { "match_all": {} },
-  "sort": [
-    { "account_number": "asc" }
-  ],
-  "size": 10
-}
-*/
+// ExampleExample_Search 搜索全部数据
 func ExampleExample_Search() {
+	/*
+		GET /bank/_search
+		{
+		  "query": { "match_all": {} },
+		  "sort": [
+		    { "account_number": "asc" }
+		  ],
+		  "size": 10
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -164,18 +170,19 @@ func ExampleExample_Search() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "query": { "match_all": {} },
-  "sort": [
-    { "account_number": "asc" }
-  ],
-  "from": 10,
-  "size": 10
-}
-*/
+// ExampleExample_SearchFromSize 分页搜索
 func ExampleExample_SearchFromSize() {
+	/*
+		GET /bank/_search
+		{
+		  "query": { "match_all": {} },
+		  "sort": [
+		    { "account_number": "asc" }
+		  ],
+		  "from": 10,
+		  "size": 10
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -199,7 +206,16 @@ func ExampleExample_SearchFromSize() {
 	xjson.Print("formSizeList", formSizeList)
 	return
 }
+
+// ExampleExample_SearchMatch 搜索匹配分词
+// 确定一下 bank 是否配置了mappings address,如果 mappings 类型是 keyword 则无法分词搜索
 func ExampleExample_SearchMatch() {
+	/*
+		GET /bank/_search
+		{
+		  "query": { "match": { "address": "mill lane" } }
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -226,22 +242,23 @@ func ExampleExample_SearchMatch() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        { "match": { "age": "40" } }
-      ],
-      "must_not": [
-        { "match": { "state": "ID" } }
-      ]
-    }
-  }
-}
-*/
+// ExampleExample_SearchMatchPhrase 搜索匹配短语
 func ExampleExample_SearchMatchPhrase() {
+	/*
+		GET /bank/_search
+		{
+		  "query": {
+		    "bool": {
+		      "must": [
+		        { "match": { "age": "40" } }
+		      ],
+		      "must_not": [
+		        { "match": { "state": "ID" } }
+		      ]
+		    }
+		  }
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -268,22 +285,23 @@ func ExampleExample_SearchMatchPhrase() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "query": {
-    "bool": {
-      "must": [
-        { "match": { "age": "40" } }
-      ],
-      "must_not": [
-        { "match": { "state": "ID" } }
-      ]
-    }
-  }
-}
-*/
+// ExampleExample_SearchBool 搜索 bool 条件
 func ExampleExample_SearchBool() {
+	/*
+		GET /bank/_search
+		{
+		  "query": {
+		    "bool": {
+		      "must": [
+		        { "match": { "age": "40" } }
+		      ],
+		      "must_not": [
+		        { "match": { "state": "ID" } }
+		      ]
+		    }
+		  }
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -312,25 +330,26 @@ func ExampleExample_SearchBool() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "query": {
-    "bool": {
-      "must": { "match_all": {} },
-      "filter": {
-        "range": {
-          "balance": {
-            "gte": 20000,
-            "lte": 30000
-          }
-        }
-      }
-    }
-  }
-}
-*/
+// ExampleExample_SearchBool 搜索 bool 条件
 func ExampleExample_SearchBoolFilter() {
+	/*
+		GET /bank/_search
+		{
+		  "query": {
+		    "bool": {
+		      "must": { "match_all": {} },
+		      "filter": {
+		        "range": {
+		          "balance": {
+		            "gte": 20000,
+		            "lte": 30000
+		          }
+		        }
+		      }
+		    }
+		  }
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {
@@ -340,12 +359,21 @@ func ExampleExample_SearchBoolFilter() {
 	ctx := context.Background()
 	searchResult, err := example.Client.Search().
 		Index("bank").
-		Query(es7.NewBoolQuery().Must(
-			es7.NewMatchAllQuery(),
-		).Filter(
-			es7.NewRangeQuery("balance").Gte(20000).Lte(30000),
-		),
-		).
+		Source(es.O{
+			"query": es.O{
+				"bool": es.O{
+					"must": es.O{"match_all": es.O{}},
+					"filter": es.O{
+						"range": es.O{
+							"balance": es.O{
+								"gte": 20000,
+								"lte": 30000,
+							},
+						},
+					},
+				},
+			},
+		}).
 		Do(ctx)
 	if err != nil {
 		return
@@ -359,20 +387,21 @@ func ExampleExample_SearchBoolFilter() {
 	return
 }
 
-/*
-GET /bank/_search
-{
-  "size": 0,
-  "aggs": {
-    "group_by_state": {
-      "terms": {
-        "field": "state"
-      }
-    }
-  }
-}
-*/
+// ExampleExample_SearchGroupBy 搜索-聚合分析-分组
 func ExampleExample_SearchGroupBy() {
+	/*
+		GET /bank/_search
+		{
+		  "size": 0,
+		  "aggs": {
+		    "group_by_state": {
+		      "terms": {
+		        "field": "state"
+		      }
+		    }
+		  }
+		}
+	*/
 	var err error
 	/* only test use */ defer func() {
 		if err != nil {

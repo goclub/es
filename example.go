@@ -8,6 +8,8 @@ type Example struct {
 	Client *es7.Client
 }
 
+func (Example) NewClient() {}
+
 // Index see Example
 func (Example) Index() {}
 
