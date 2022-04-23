@@ -12,11 +12,7 @@ import (
 	"testing"
 )
 
-var example Example
-
-type Example struct {
-	Client *es7.Client
-}
+var example es.Example
 
 func init() {
 	/*
