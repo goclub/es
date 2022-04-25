@@ -33,3 +33,5 @@ func (Example) SearchBoolFilter() {}
 
 // SearchGroupBy see example
 func (Example) SearchGroupBy() {}
+
+func (Example) SearchAggsAggs() {}

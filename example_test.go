@@ -90,6 +90,9 @@ func (suite TestExampleSuite) TestExampleSearchBoolFilter() {
 func (suite TestExampleSuite) TestExampleSearchGroupBy() {
 	ExampleExample_SearchGroupBy()
 }
+func (suite TestExampleSuite) TestExample_SearchAggsAggs() {
+	ExampleExample_SearchAggsAggs()
+}
 
 // ExampleExample_Index 索引文档
 func ExampleExample_Index() {
@@ -359,13 +362,13 @@ func ExampleExample_SearchBoolFilter() {
 	ctx := context.Background()
 	searchResult, err := example.Client.Search().
 		Index("bank").
-		Source(es.O{
-			"query": es.O{
-				"bool": es.O{
-					"must": es.O{"match_all": es.O{}},
-					"filter": es.O{
-						"range": es.O{
-							"balance": es.O{
+		Source(es.M{
+			"query": es.M{
+				"bool": es.M{
+					"must": es.M{"match_all": es.M{}},
+					"filter": es.M{
+						"range": es.M{
+							"balance": es.M{
 								"gte": 20000,
 								"lte": 30000,
 							},
@@ -409,11 +412,11 @@ func ExampleExample_SearchGroupBy() {
 		}
 	}()
 	ctx := context.Background()
-	result, err := example.Client.Search().Source(es.O{
+	result, err := example.Client.Search().Source(es.M{
 		"size": 0,
-		"aggs": es.O{
-			"group_by_state": es.O{
-				"terms": es.O{
+		"aggs": es.M{
+			"group_by_state": es.M{
+				"terms": es.M{
 					"field": "state",
 				},
 			},
@@ -423,5 +426,58 @@ func ExampleExample_SearchGroupBy() {
 		return
 	}
 	xjson.PrintIndent("group_by_state", result.Aggregations["group_by_state"])
+	return
+}
+
+// ExampleExample_SearchAggsAggs 搜索-合并聚合
+func ExampleExample_SearchAggsAggs() {
+	/*
+		GET /bank/_search
+		{
+		  "size": 0,
+		  "aggs": {
+			"group_by_state": {
+			  "terms": {
+				"field": "state"
+			  },
+			  "aggs": {
+				"average_balance": {
+				  "avg": {
+					"field": "balance"
+				  }
+				}
+			  }
+			}
+		  }
+		}
+	*/
+	var err error
+	/* only test use */ defer func() {
+		if err != nil {
+			xerr.PrintStack(err)
+		}
+	}()
+	ctx := context.Background()
+	result, err := example.Client.Search().Source(es.M{
+		"size": 0,
+		"aggs": es.M{
+			"group_by_state": es.M{
+				"terms": es.M{
+					"field": "state",
+				},
+				"aggs": es.M{
+					"average_balance": es.M{
+						"avg": es.M{
+							"field": "balance",
+						},
+					},
+				},
+			},
+		},
+	}).Do(ctx)
+	if err != nil {
+		return
+	}
+	xjson.PrintIndent("AggsAggs", result.Aggregations["group_by_state"])
 	return
 }
